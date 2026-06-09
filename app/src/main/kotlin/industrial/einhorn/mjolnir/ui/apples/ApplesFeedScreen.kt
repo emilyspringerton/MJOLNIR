@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material3.*
@@ -21,6 +23,8 @@ import industrial.einhorn.mjolnir.data.model.Apple
 fun ApplesFeedScreen(
     onAppleClick: (Long) -> Unit,
     onProductsClick: () -> Unit,
+    onIntelligenceClick: () -> Unit = {},
+    onSourceClick: () -> Unit = {},
     viewModel: ApplesFeedViewModel = hiltViewModel()
 ) {
     val apples by viewModel.apples.collectAsState(initial = emptyList())
@@ -31,6 +35,12 @@ fun ApplesFeedScreen(
             TopAppBar(
                 title = { Text("APPLES") },
                 actions = {
+                    IconButton(onClick = onSourceClick) {
+                        Icon(Icons.Filled.Code, "Source")
+                    }
+                    IconButton(onClick = onIntelligenceClick) {
+                        Icon(Icons.Filled.CameraAlt, "Intelligence")
+                    }
                     IconButton(onClick = onProductsClick) {
                         Icon(Icons.Outlined.OpenInNew, "Products")
                     }

@@ -85,6 +85,15 @@ dependencies {
     // WebView
     implementation(libs.accompanist.webview)
 
+    // CameraX
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.lifecycle)
+    implementation(libs.camerax.view)
+
+    // Image loading (observation result thumbnails)
+    implementation(libs.coil.compose)
+
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
     testImplementation(libs.junit)

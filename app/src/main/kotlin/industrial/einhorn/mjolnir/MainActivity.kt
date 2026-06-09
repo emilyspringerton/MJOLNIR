@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,7 +22,12 @@ import industrial.einhorn.mjolnir.data.repository.AuthRepository
 import industrial.einhorn.mjolnir.ui.apples.AppleDetailScreen
 import industrial.einhorn.mjolnir.ui.apples.ApplesFeedScreen
 import industrial.einhorn.mjolnir.ui.auth.LoginScreen
+import industrial.einhorn.mjolnir.ui.intelligence.CameraScreen
+import industrial.einhorn.mjolnir.ui.intelligence.IntelligenceScreen
+import industrial.einhorn.mjolnir.ui.intelligence.IntelligenceViewModel
+import industrial.einhorn.mjolnir.ui.intelligence.ObservationDetailScreen
 import industrial.einhorn.mjolnir.ui.products.ProductsScreen
+import industrial.einhorn.mjolnir.ui.source.SourceBrowserScreen
 import industrial.einhorn.mjolnir.ui.theme.MjolnirTheme
 import javax.inject.Inject
 
@@ -54,7 +60,9 @@ class MainActivity : ComponentActivity() {
                             composable("feed") {
                                 ApplesFeedScreen(
                                     onAppleClick = { id -> navController.navigate("apple/$id") },
-                                    onProductsClick = { navController.navigate("products") }
+                                    onProductsClick = { navController.navigate("products") },
+                                    onIntelligenceClick = { navController.navigate("intelligence") },
+                                    onSourceClick = { navController.navigate("source") },
                                 )
                             }
                             composable(
@@ -72,6 +80,47 @@ class MainActivity : ComponentActivity() {
                                 deepLinks = listOf(navDeepLink { uriPattern = "mjolnir://product/{name}" })
                             ) {
                                 ProductsScreen(onBack = { navController.popBackStack() })
+                            }
+                            // Intelligence
+                            composable("intelligence") {
+                                IntelligenceScreen(
+                                    onOpenCamera = { navController.navigate("camera") },
+                                    onOpenObservation = { id -> navController.navigate("observation/$id") },
+                                )
+                            }
+                            composable("camera") {
+                                val intelligenceVm: IntelligenceViewModel = hiltViewModel(
+                                    navController.getBackStackEntry("intelligence")
+                                )
+                                CameraScreen(
+                                    onImageCaptured = { jpegBytes ->
+                                        intelligenceVm.submitImage(jpegBytes, prompt = null)
+                                        navController.popBackStack()
+                                    },
+                                    onBack = { navController.popBackStack() },
+                                )
+                            }
+                            composable(
+                                route = "observation/{obsId}",
+                                arguments = listOf(navArgument("obsId") { type = NavType.LongType }),
+                            ) { back ->
+                                ObservationDetailScreen(
+                                    observationId = back.arguments!!.getLong("obsId"),
+                                    onBack = { navController.popBackStack() },
+                                )
+                            }
+                            // Source browser
+                            composable("source") {
+                                SourceBrowserScreen(onBack = { navController.popBackStack() })
+                            }
+                            composable(
+                                route = "source/{repo}",
+                                arguments = listOf(navArgument("repo") { type = NavType.StringType }),
+                            ) { back ->
+                                SourceBrowserScreen(
+                                    repoName = back.arguments!!.getString("repo"),
+                                    onBack = { navController.popBackStack() },
+                                )
                             }
                         }
                     }

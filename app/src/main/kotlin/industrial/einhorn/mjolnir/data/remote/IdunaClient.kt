@@ -3,6 +3,10 @@ package industrial.einhorn.mjolnir.data.remote
 import industrial.einhorn.mjolnir.data.model.Apple
 import industrial.einhorn.mjolnir.data.model.ApplesResponse
 import industrial.einhorn.mjolnir.data.model.DeviceTokenRequest
+import industrial.einhorn.mjolnir.data.model.Observation
+import industrial.einhorn.mjolnir.data.model.ObservationRequest
+import industrial.einhorn.mjolnir.data.model.ObservationResponse
+import industrial.einhorn.mjolnir.data.model.ObservationsResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,6 +30,19 @@ interface IdunaApi {
 
     @POST("api/v1/auth/google")
     suspend fun authenticateGoogle(@Body body: GoogleAuthRequest): GoogleAuthResponse
+
+    // Intelligence / camera observations
+    @POST("api/v1/intelligence/observe")
+    suspend fun submitObservation(@Body request: ObservationRequest): Response<ObservationResponse>
+
+    @GET("api/v1/intelligence/observations")
+    suspend fun listObservations(
+        @Query("limit") limit: Int = 20,
+        @Query("status") status: String? = null,
+    ): ObservationsResponse
+
+    @GET("api/v1/intelligence/observations/{id}")
+    suspend fun getObservation(@Path("id") id: Long): Observation
 }
 
 data class AgentAuthRequest(

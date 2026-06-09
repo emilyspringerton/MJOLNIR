@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.work.*
 import dagger.hilt.android.HiltAndroidApp
 import industrial.einhorn.mjolnir.data.local.ApplesGitSyncWorker
+import industrial.einhorn.mjolnir.data.local.MultiRepoSyncWorker
 import industrial.einhorn.mjolnir.notification.NotificationChannels
 import java.util.concurrent.TimeUnit
 
@@ -14,6 +15,7 @@ class MjolnirApp : Application() {
         super.onCreate()
         NotificationChannels.create(this)
         scheduleApplesSync()
+        scheduleMultiRepoSync()
     }
 
     private fun scheduleApplesSync() {
@@ -29,6 +31,24 @@ class MjolnirApp : Application() {
             .build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "apples-git-sync",
+            ExistingPeriodicWorkPolicy.KEEP,
+            request
+        )
+    }
+
+    private fun scheduleMultiRepoSync() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .build()
+        val request = PeriodicWorkRequestBuilder<MultiRepoSyncWorker>(
+            repeatInterval = 24,
+            repeatIntervalTimeUnit = TimeUnit.HOURS
+        )
+            .setConstraints(constraints)
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            MultiRepoSyncWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             request
         )
