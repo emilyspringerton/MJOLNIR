@@ -7,6 +7,10 @@ import industrial.einhorn.mjolnir.data.model.Observation
 import industrial.einhorn.mjolnir.data.model.ObservationRequest
 import industrial.einhorn.mjolnir.data.model.ObservationResponse
 import industrial.einhorn.mjolnir.data.model.ObservationsResponse
+import industrial.einhorn.mjolnir.data.model.SprintItem
+import industrial.einhorn.mjolnir.data.model.SprintSubmitRequest
+import industrial.einhorn.mjolnir.data.model.SprintSubmitResponse
+import industrial.einhorn.mjolnir.data.model.SprintsResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -43,6 +47,19 @@ interface IdunaApi {
 
     @GET("api/v1/intelligence/observations/{id}")
     suspend fun getObservation(@Path("id") id: Long): Observation
+
+    // HEIMDAL sprint planning
+    @POST("api/v1/heimdal/sprints")
+    suspend fun submitSprint(@Body request: SprintSubmitRequest): Response<SprintSubmitResponse>
+
+    @GET("api/v1/heimdal/sprints")
+    suspend fun listSprints(
+        @Query("limit") limit: Int = 50,
+        @Query("status") status: String? = null,
+    ): SprintsResponse
+
+    @GET("api/v1/heimdal/sprints/{id}")
+    suspend fun getSprint(@Path("id") id: Long): SprintItem
 }
 
 data class AgentAuthRequest(

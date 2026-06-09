@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material3.*
@@ -25,6 +26,7 @@ fun ApplesFeedScreen(
     onProductsClick: () -> Unit,
     onIntelligenceClick: () -> Unit = {},
     onSourceClick: () -> Unit = {},
+    onHeimdalClick: () -> Unit = {},
     viewModel: ApplesFeedViewModel = hiltViewModel()
 ) {
     val apples by viewModel.apples.collectAsState(initial = emptyList())
@@ -35,6 +37,9 @@ fun ApplesFeedScreen(
             TopAppBar(
                 title = { Text("APPLES") },
                 actions = {
+                    IconButton(onClick = onHeimdalClick) {
+                        Icon(Icons.Filled.FlashOn, "Sprint Planning")
+                    }
                     IconButton(onClick = onSourceClick) {
                         Icon(Icons.Filled.Code, "Source")
                     }

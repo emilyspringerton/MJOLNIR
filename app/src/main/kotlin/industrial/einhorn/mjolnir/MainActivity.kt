@@ -22,6 +22,7 @@ import industrial.einhorn.mjolnir.data.repository.AuthRepository
 import industrial.einhorn.mjolnir.ui.apples.AppleDetailScreen
 import industrial.einhorn.mjolnir.ui.apples.ApplesFeedScreen
 import industrial.einhorn.mjolnir.ui.auth.LoginScreen
+import industrial.einhorn.mjolnir.ui.heimdal.HeimdalScreen
 import industrial.einhorn.mjolnir.ui.intelligence.CameraScreen
 import industrial.einhorn.mjolnir.ui.intelligence.IntelligenceScreen
 import industrial.einhorn.mjolnir.ui.intelligence.IntelligenceViewModel
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
                                     onProductsClick = { navController.navigate("products") },
                                     onIntelligenceClick = { navController.navigate("intelligence") },
                                     onSourceClick = { navController.navigate("source") },
+                                    onHeimdalClick = { navController.navigate("heimdal") },
                                 )
                             }
                             composable(
@@ -108,6 +110,10 @@ class MainActivity : ComponentActivity() {
                                     observationId = back.arguments!!.getLong("obsId"),
                                     onBack = { navController.popBackStack() },
                                 )
+                            }
+                            // HEIMDAL sprint planning
+                            composable("heimdal") {
+                                HeimdalScreen(onBack = { navController.popBackStack() })
                             }
                             // Source browser
                             composable("source") {
