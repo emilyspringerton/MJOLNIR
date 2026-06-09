@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MJOLNIR</string>
+    <string name="channel_critical_name">Critical Alerts</string>
+    <string name="channel_critical_desc">Critical escalations requiring immediate CEO attention</string>
+    <string name="channel_high_name">High Priority</string>
+    <string name="channel_high_desc">Important signals and CEO-visible observations</string>
+    <string name="channel_normal_name">Activity</string>
+    <string name="channel_normal_desc">Routine Apple feed and RSI cycle updates</string>
+</resources>
