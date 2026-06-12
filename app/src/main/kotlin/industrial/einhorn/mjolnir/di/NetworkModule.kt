@@ -5,12 +5,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import industrial.einhorn.mjolnir.BuildConfig
+import industrial.einhorn.mjolnir.data.remote.EmilyApi
 import industrial.einhorn.mjolnir.data.remote.IdunaApi
 import industrial.einhorn.mjolnir.data.remote.IdunaAuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +29,8 @@ object NetworkModule {
             .build()
 
     @Provides @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
+    @Named("iduna")
+    fun provideIdunaRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.IDUNA_BASE_URL + "/")
             .client(client)
@@ -35,6 +38,19 @@ object NetworkModule {
             .build()
 
     @Provides @Singleton
-    fun provideIdunaApi(retrofit: Retrofit): IdunaApi =
+    @Named("emily")
+    fun provideEmilyRetrofit(client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.EMILY_BASE_URL + "/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides @Singleton
+    fun provideIdunaApi(@Named("iduna") retrofit: Retrofit): IdunaApi =
         retrofit.create(IdunaApi::class.java)
+
+    @Provides @Singleton
+    fun provideEmilyApi(@Named("emily") retrofit: Retrofit): EmilyApi =
+        retrofit.create(EmilyApi::class.java)
 }

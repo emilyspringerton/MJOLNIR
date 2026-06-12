@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +28,7 @@ fun ApplesFeedScreen(
     onIntelligenceClick: () -> Unit = {},
     onSourceClick: () -> Unit = {},
     onHeimdalClick: () -> Unit = {},
+    onRsiClick: () -> Unit = {},
     viewModel: ApplesFeedViewModel = hiltViewModel()
 ) {
     val apples by viewModel.apples.collectAsState(initial = emptyList())
@@ -37,6 +39,9 @@ fun ApplesFeedScreen(
             TopAppBar(
                 title = { Text("APPLES") },
                 actions = {
+                    IconButton(onClick = onRsiClick) {
+                        Icon(Icons.Filled.Timeline, "RSI Loop")
+                    }
                     IconButton(onClick = onHeimdalClick) {
                         Icon(Icons.Filled.FlashOn, "Sprint Planning")
                     }
