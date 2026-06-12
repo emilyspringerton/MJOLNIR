@@ -49,3 +49,11 @@ cp app/google-services.json.example app/google-services.json
 - `github.com/emilyspringerton/IDUNA` — auth + Apple store + push token registry
 - `github.com/emilyspringerton/APPLES` — append-only Apple archive (JGit synced)
 - `github.com/emilyspringerton/EMILY` — Emily Prime agent (sends pushes)
+
+## CHANGELOG Protocol
+
+After any meaningful change, update CHANGELOG.md:
+```bash
+emily changelog add MJOLNIR "<what changed>"
+# or manually: append a dated bullet under ## YYYY-MM-DD in MJOLNIR/CHANGELOG.md
+```
