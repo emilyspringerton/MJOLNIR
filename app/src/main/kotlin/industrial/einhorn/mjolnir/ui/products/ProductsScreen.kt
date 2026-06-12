@@ -15,6 +15,16 @@ private val products = listOf(
     Product("FatBaby News", "${BuildConfig.IDUNA_BASE_URL.replace(":8090", ":8082")}", "Filing reader + signals"),
     Product("Signal API", "${BuildConfig.IDUNA_BASE_URL.replace(":8090", ":8083")}", "Query intelligence signals"),
     Product("IDUNA Admin", "${BuildConfig.IDUNA_BASE_URL}/admin", "IAM back office"),
+    Product(
+        "TYLER Episodes",
+        "https://raw.githubusercontent.com/emilyspringerton/TYLER/main/EPISODES.md",
+        "Episode index — S1–S7, 52 episodes, Build 0082 current"
+    ),
+    Product(
+        "SHANKPIT Server",
+        "${BuildConfig.IDUNA_BASE_URL.replace(":8090", ":6969")}/health",
+        "Game server health — UDP :6969, Go backend"
+    ),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

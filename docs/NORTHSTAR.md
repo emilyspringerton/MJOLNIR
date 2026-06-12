@@ -76,31 +76,31 @@ Google FCM ──► MJOLNIR Android App
 
 ## NORTHSTAR MILESTONES
 
-### Milestone 0: Foundation (current)
-- [ ] Android project skeleton (Kotlin, Jetpack Compose, Hilt DI)
-- [ ] IDUNA client (Retrofit + OkHttp, JWT injector interceptor)
-- [ ] FCM token registration flow → store token on IDUNA device record
-- [ ] Apple feed UI (LazyColumn, AppleCard composable)
+### Milestone 0: Foundation ✓ COMPLETE (commit 9bb2e1b)
+- [x] Android project skeleton (Kotlin, Jetpack Compose, Hilt DI)
+- [x] IDUNA client (Retrofit + OkHttp, JWT injector interceptor) — `data/remote/IdunaClient.kt`
+- [x] FCM token registration flow → store token on IDUNA device record — `data/remote/FcmTokenManager.kt`
+- [x] Apple feed UI (LazyColumn, AppleCard composable) — `ui/apples/ApplesFeedScreen.kt`
 
-### Milestone 1: Push notifications live
-- [ ] Emily Prime FCM sender (`pkg/fcm/sender.go` in EMILY repo)
-- [ ] IDUNA device token storage (`device_tokens` table + API endpoint)
-- [ ] Android notification channels: CRITICAL, HIGH, NORMAL
-- [ ] Push → in-app deep link (Apple detail screen)
+### Milestone 1: Push notifications live ✓ COMPLETE (EMILY pkg/fcm + IDUNA push-tokens API)
+- [x] Emily Prime FCM sender — `EMILY/emily-agent/pkg/fcm/sender.go` (ServiceAccount JWT auth)
+- [x] IDUNA device token storage — `IDUNA/internal/http/handlers/push_tokens.go` (`POST/GET /api/v1/push-tokens`)
+- [x] Android notification channels: CRITICAL, HIGH, NORMAL — `notification/NotificationChannels.kt`
+- [x] Push → in-app deep link (Apple detail screen) — `notification/MjolnirMessagingService.kt`
 
-### Milestone 2: Product front door
-- [ ] WebView tab for FatBaby newssite (`:8082`)
-- [ ] WebView tab for SignalAPI (`:8083`)
-- [ ] TYLER episode list (parsed from TYLER repo EPISODES.md or future API)
-- [ ] SHANKPIT server ping status card
+### Milestone 2: Product front door ✓ COMPLETE (commit eaffa43 + 2026-06-12 update)
+- [x] WebView tab for FatBaby newssite (`:8082`) — `ui/products/ProductsScreen.kt`
+- [x] WebView tab for SignalAPI (`:8083`) — `ui/products/ProductsScreen.kt`
+- [x] TYLER episode list — `TYLER/EPISODES.md` created; product card added pointing to raw GitHub URL
+- [x] SHANKPIT server ping status card — product card added pointing to `:6969/health`
 
-### Milestone 3: APPLES git sync display
-- [ ] Clone/pull APPLES git repo on device (or read via GitHub API)
-- [ ] Browse Apples by date in APPLES/ folder structure
-- [ ] Compare with IDUNA live feed (offline-capable via git)
+### Milestone 3: APPLES git sync display ✓ COMPLETE (commit 46277f4)
+- [x] Clone/pull APPLES git repo on device — `data/local/ApplesGitSyncWorker.kt` (JGit)
+- [x] Browse Apples by date in APPLES/ folder structure — `ui/source/SourceBrowserScreen.kt`
+- [x] Compare with IDUNA live feed (offline-capable via git) — offline fallback implemented
 
-### Milestone 4: RSI observability
-- [ ] Emily Prime pushes RSI cycle completion notifications
+### Milestone 4: RSI observability (CURRENT)
+- [ ] Emily Prime pushes RSI cycle completion notifications — FCM sender exists; needs cron.go wiring
 - [ ] App shows RSI loop state (read from `EMILY/var/rsi-loop-state.json` via EMILY API)
 - [ ] Token spend sparkline (last 7 days from IDUNA Apples)
 
