@@ -99,10 +99,10 @@ Google FCM ──► MJOLNIR Android App
 - [x] Browse Apples by date in APPLES/ folder structure — `ui/source/SourceBrowserScreen.kt`
 - [x] Compare with IDUNA live feed (offline-capable via git) — offline fallback implemented
 
-### Milestone 4: RSI observability (CURRENT)
-- [ ] Emily Prime pushes RSI cycle completion notifications — FCM sender exists; needs cron.go wiring
-- [ ] App shows RSI loop state (read from `EMILY/var/rsi-loop-state.json` via EMILY API)
-- [ ] Token spend sparkline (last 7 days from IDUNA Apples)
+### Milestone 4: RSI observability ✓ COMPLETE (2026-06-14)
+- [x] Emily Prime pushes RSI cycle completion notifications — FCM fires in cron.go Apple-filing goroutine on task.Status == "success". EMILY commit 50dc5a1.
+- [x] App shows RSI loop state — RsiScreen + RsiViewModel reads GET /api/v1/emily/state. MJOLNIR commit 9d88ec6.
+- [x] Token spend sparkline (last 7 days) — IDUNA GET /api/v1/apples/stats/daily-tokens; TokenSparklineCard Canvas bar chart in RsiScreen; RsiViewModel fetches stats in parallel with cycle state.
 
 ---
 

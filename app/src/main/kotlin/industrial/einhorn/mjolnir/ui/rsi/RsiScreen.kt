@@ -1,5 +1,6 @@
 package industrial.einhorn.mjolnir.ui.rsi
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,10 +11,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import industrial.einhorn.mjolnir.data.model.CycleState
+import industrial.einhorn.mjolnir.data.model.DailyTokenStat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -62,14 +67,14 @@ fun RsiScreen(
                         Button(onClick = { viewModel.refresh() }) { Text("Retry") }
                     }
                 }
-                state.cycleState != null -> RsiContent(state.cycleState!!)
+                state.cycleState != null -> RsiContent(state.cycleState!!, state.tokenStats)
             }
         }
     }
 }
 
 @Composable
-private fun RsiContent(state: CycleState) {
+private fun RsiContent(state: CycleState, tokenStats: List<DailyTokenStat> = emptyList()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,6 +82,11 @@ private fun RsiContent(state: CycleState) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        // Token spend sparkline
+        if (tokenStats.isNotEmpty()) {
+            TokenSparklineCard(tokenStats)
+        }
+
         // Cycle header
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -182,3 +192,77 @@ private fun formatTimestamp(iso: String): String = try {
         .withZone(ZoneId.systemDefault())
         .format(instant)
 } catch (_: Exception) { iso.take(16) }
+
+@Composable
+private fun TokenSparklineCard(stats: List<DailyTokenStat>) {
+    val primary = MaterialTheme.colorScheme.primary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+    val maxTokens = stats.maxOfOrNull { it.tokens }?.takeIf { it > 0 } ?: 1L
+    val totalTokens = stats.sumOf { it.tokens }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("TOKEN SPEND (7 DAYS)", style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary)
+                Text(
+                    formatTokenCount(totalTokens),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                val barCount = stats.size
+                if (barCount == 0) return@Canvas
+                val gap = 4.dp.toPx()
+                val barWidth = (size.width - gap * (barCount - 1)) / barCount
+                stats.forEachIndexed { i, stat ->
+                    val x = i * (barWidth + gap)
+                    val barHeight = (stat.tokens.toFloat() / maxTokens) * size.height
+                    // Background track
+                    drawRoundRect(
+                        color = surfaceVariant,
+                        topLeft = Offset(x, 0f),
+                        size = Size(barWidth, size.height),
+                        cornerRadius = CornerRadius(4.dp.toPx())
+                    )
+                    // Filled bar
+                    if (barHeight > 0f) {
+                        drawRoundRect(
+                            color = primary,
+                            topLeft = Offset(x, size.height - barHeight),
+                            size = Size(barWidth, barHeight),
+                            cornerRadius = CornerRadius(4.dp.toPx())
+                        )
+                    }
+                }
+            }
+            Spacer(Modifier.height(4.dp))
+            // Day labels
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                stats.forEach { stat ->
+                    Text(
+                        stat.date.takeLast(5), // MM-DD
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun formatTokenCount(tokens: Long): String = when {
+    tokens >= 1_000_000 -> "%.1fM".format(tokens / 1_000_000.0)
+    tokens >= 1_000 -> "%.1fK".format(tokens / 1_000.0)
+    else -> tokens.toString()
+}

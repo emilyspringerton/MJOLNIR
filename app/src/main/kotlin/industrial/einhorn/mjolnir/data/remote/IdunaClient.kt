@@ -2,6 +2,7 @@ package industrial.einhorn.mjolnir.data.remote
 
 import industrial.einhorn.mjolnir.data.model.Apple
 import industrial.einhorn.mjolnir.data.model.ApplesResponse
+import industrial.einhorn.mjolnir.data.model.DailyTokenStatsResponse
 import industrial.einhorn.mjolnir.data.model.DeviceTokenRequest
 import industrial.einhorn.mjolnir.data.model.Observation
 import industrial.einhorn.mjolnir.data.model.ObservationRequest
@@ -60,6 +61,12 @@ interface IdunaApi {
 
     @GET("api/v1/heimdal/sprints/{id}")
     suspend fun getSprint(@Path("id") id: Long): SprintItem
+
+    // Token spend sparkline — IDUNA /api/v1/apples/stats/daily-tokens
+    @GET("api/v1/apples/stats/daily-tokens")
+    suspend fun getDailyTokenStats(
+        @Query("days") days: Int = 7,
+    ): DailyTokenStatsResponse
 }
 
 data class AgentAuthRequest(
