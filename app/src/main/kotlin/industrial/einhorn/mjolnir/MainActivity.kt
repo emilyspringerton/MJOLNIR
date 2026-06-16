@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import industrial.einhorn.mjolnir.data.repository.AuthRepository
 import industrial.einhorn.mjolnir.ui.apples.AppleDetailScreen
 import industrial.einhorn.mjolnir.ui.apples.ApplesFeedScreen
+import industrial.einhorn.mjolnir.ui.chat.ChatScreen
 import industrial.einhorn.mjolnir.ui.auth.LoginScreen
 import industrial.einhorn.mjolnir.ui.heimdal.HeimdalScreen
 import industrial.einhorn.mjolnir.ui.intelligence.CameraScreen
@@ -67,6 +68,8 @@ class MainActivity : ComponentActivity() {
                                     onSourceClick = { navController.navigate("source") },
                                     onHeimdalClick = { navController.navigate("heimdal") },
                                     onRsiClick = { navController.navigate("rsi") },
+                                    onEmilyPrimeChatClick = { navController.navigate("chat/EMILY_PRIME") },
+                                    onFatBabyChatClick = { navController.navigate("chat/FATBABY_EMILY") },
                                 )
                             }
                             composable(
@@ -133,6 +136,13 @@ class MainActivity : ComponentActivity() {
                                     repoName = back.arguments!!.getString("repo"),
                                     onBack = { navController.popBackStack() },
                                 )
+                            }
+                            // Chat screens
+                            composable(
+                                route = "chat/{mode}",
+                                arguments = listOf(navArgument("mode") { type = NavType.StringType }),
+                            ) {
+                                ChatScreen(onBack = { navController.popBackStack() })
                             }
                         }
                     }

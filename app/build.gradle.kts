@@ -23,6 +23,7 @@ android {
         debug {
             buildConfigField("String", "IDUNA_BASE_URL", "\"http://10.0.2.2:8090\"")
             buildConfigField("String", "EMILY_BASE_URL", "\"http://10.0.2.2:8086\"")
+            buildConfigField("String", "FATBABY_BASE_URL", "\"http://10.0.2.2:8082\"")
             buildConfigField("String", "MJOLNIR_AGENT_NAME", "\"mjolnir-emily\"")
         }
         release {
@@ -30,6 +31,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "IDUNA_BASE_URL", "\"https://iduna.einhorn.industrial\"")
             buildConfigField("String", "EMILY_BASE_URL", "\"https://emily.einhorn.industrial\"")
+            buildConfigField("String", "FATBABY_BASE_URL", "\"https://fatbaby.einhorn.industrial\"")
             buildConfigField("String", "MJOLNIR_AGENT_NAME", "\"mjolnir-emily\"")
         }
     }

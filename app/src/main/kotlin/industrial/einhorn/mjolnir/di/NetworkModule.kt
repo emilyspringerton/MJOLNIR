@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import industrial.einhorn.mjolnir.BuildConfig
 import industrial.einhorn.mjolnir.data.remote.EmilyApi
+import industrial.einhorn.mjolnir.data.remote.FatBabyApi
 import industrial.einhorn.mjolnir.data.remote.IdunaApi
 import industrial.einhorn.mjolnir.data.remote.IdunaAuthInterceptor
 import okhttp3.OkHttpClient
@@ -51,6 +52,19 @@ object NetworkModule {
         retrofit.create(IdunaApi::class.java)
 
     @Provides @Singleton
+    @Named("fatbaby")
+    fun provideFatBabyRetrofit(client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.FATBABY_BASE_URL + "/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides @Singleton
     fun provideEmilyApi(@Named("emily") retrofit: Retrofit): EmilyApi =
         retrofit.create(EmilyApi::class.java)
+
+    @Provides @Singleton
+    fun provideFatBabyApi(@Named("fatbaby") retrofit: Retrofit): FatBabyApi =
+        retrofit.create(FatBabyApi::class.java)
 }

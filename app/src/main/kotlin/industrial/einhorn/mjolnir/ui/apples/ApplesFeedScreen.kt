@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.outlined.OpenInNew
@@ -29,6 +31,8 @@ fun ApplesFeedScreen(
     onSourceClick: () -> Unit = {},
     onHeimdalClick: () -> Unit = {},
     onRsiClick: () -> Unit = {},
+    onEmilyPrimeChatClick: () -> Unit = {},
+    onFatBabyChatClick: () -> Unit = {},
     viewModel: ApplesFeedViewModel = hiltViewModel()
 ) {
     val apples by viewModel.apples.collectAsState(initial = emptyList())
@@ -39,6 +43,12 @@ fun ApplesFeedScreen(
             TopAppBar(
                 title = { Text("APPLES") },
                 actions = {
+                    IconButton(onClick = onEmilyPrimeChatClick) {
+                        Icon(Icons.Filled.Message, "Emily Prime Chat")
+                    }
+                    IconButton(onClick = onFatBabyChatClick) {
+                        Icon(Icons.Filled.BarChart, "FatBaby Chat")
+                    }
                     IconButton(onClick = onRsiClick) {
                         Icon(Icons.Filled.Timeline, "RSI Loop")
                     }
