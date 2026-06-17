@@ -26,6 +26,13 @@ android {
             buildConfigField("String", "FATBABY_BASE_URL", "\"http://10.0.2.2:8082\"")
             buildConfigField("String", "MJOLNIR_AGENT_NAME", "\"mjolnir-emily\"")
         }
+        create("staging") {
+            initWith(getByName("debug"))
+            buildConfigField("String", "IDUNA_BASE_URL", "\"https://iduna.farthq.com\"")
+            buildConfigField("String", "EMILY_BASE_URL", "\"https://iduna.farthq.com\"")
+            buildConfigField("String", "FATBABY_BASE_URL", "\"https://iduna.farthq.com\"")
+            buildConfigField("String", "MJOLNIR_AGENT_NAME", "\"mjolnir-emily\"")
+        }
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

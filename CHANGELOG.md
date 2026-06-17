@@ -1,5 +1,11 @@
 # MJOLNIR Changelog
 
+## 2026-06-17
+
+- feat(ci): GitHub Actions workflow — builds staging APK on every push to main; uploads artifact; CEO can download and sideload
+- feat(build): staging build type pointing to iduna.farthq.com (live server); initWith(debug) so it's debug-signed and sideloadable
+- docs: GETTING_STARTED.md — step-by-step CEO install guide (secret setup, APK download, sideload, Google sign-in)
+
 ## 2026-06-16
 
 - Emily Prime chat + FatBaby Emily chat: two ChatScreen/ChatViewModel screens wired into navigation (chat/{mode}); ChatRepository, FatBabyApi, FATBABY_BASE_URL; Apple #905
