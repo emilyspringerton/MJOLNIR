@@ -57,3 +57,7 @@ After any meaningful change, update CHANGELOG.md:
 emily changelog add MJOLNIR "<what changed>"
 # or manually: append a dated bullet under ## YYYY-MM-DD in MJOLNIR/CHANGELOG.md
 ```
+
+## Commit Protocol (standing instruction)
+
+Always commit and push completed work immediately — don't wait to be asked. This is the default for every repo in this monorepo.
