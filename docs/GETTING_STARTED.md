@@ -21,6 +21,10 @@ Firebase config to the repo:
 The workflow runs automatically on every push to `main`. After you push, the build takes
 about 5–8 minutes.
 
+(2026-08-04: if this secret is still missing or holds placeholder values, CI now fails fast at a
+"Validate google-services.json" step with this exact instruction in the error message, instead of
+a deep, unhelpful Gradle stack trace — both real CI runs to date failed here.)
+
 ---
 
 ## Step 2 — Download the APK

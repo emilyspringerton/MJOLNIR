@@ -25,6 +25,20 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
 
+      # Both real CI runs to date (2026-06-17, 2026-07-23) failed at "Build staging APK" with no
+      # artifact produced -- the most likely real cause is this file being empty/placeholder
+      # because the GOOGLE_SERVICES_JSON repo secret was never actually set (Settings -> Secrets
+      # and variables -> Actions -> New repository secret, pasting the real Firebase project's
+      # google-services.json content). Without this check, that failure surfaces as a deep,
+      # unhelpful Gradle/google-services-plugin stack trace; with it, CI fails fast with a real,
+      # actionable message instead.
+      - name: Validate google-services.json
+        run: |
+          if ! python3 -c "import json,sys; d=json.load(open('app/google-services.json')); sys.exit(0 if d.get('project_info',{}).get('project_number','').isdigit() else 1)" 2>/dev/null; then
+            echo "::error::app/google-services.json is missing or invalid -- the GOOGLE_SERVICES_JSON repo secret is likely unset. Set it under Settings > Secrets and variables > Actions with the real Firebase project's google-services.json content (see MJOLNIR/CLAUDE.md 'Dev setup')."
+            exit 1
+          fi
+
       - name: Build staging APK
         run: ./gradlew assembleStaging --no-daemon
 
