@@ -1,5 +1,14 @@
 # MJOLNIR Changelog
 
+## 2026-08-04
+
+- ci(build): fail fast with an actionable error when `google-services.json` is invalid. Founder
+  asked how to install MJOLNIR on an Android tablet from GitHub Actions artifacts — found both
+  real CI runs to date (2026-06-17, 2026-07-23) had failed at "Build staging APK" with no artifact
+  ever produced, most likely because the `GOOGLE_SERVICES_JSON` repo secret was never set. New
+  validation step catches this before Gradle runs instead of a deep, unhelpful stack trace.
+  README now links `docs/GETTING_STARTED.md` from the docs index for device install instructions.
+
 ## 2026-06-17
 
 - feat(ci): GitHub Actions workflow — builds staging APK on every push to main; uploads artifact; CEO can download and sideload
