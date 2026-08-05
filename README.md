@@ -6,7 +6,7 @@ Push notifications from Emily Prime. Apple feed from IDUNA. Front door to the pr
 
 ## Installing a build on your Android tablet
 
-**⚠️ Blocked right now**: every CI run to date (5 for 5, most recently run #5 on 2026-08-04) has
+**⚠️ Blocked right now**: every CI run to date (7 for 7, most recently run #7 on 2026-08-05) has
 failed at a step called **"Validate google-services.json"**, which means **no installable APK
 exists yet** — there is nothing to download until this is fixed, and it needs a real action from
 you specifically, not something fixable by editing code. This is the one step in the whole
@@ -14,14 +14,43 @@ process nobody else can do — no Firebase project, no `google-services.json`, n
 
 ### Step 1 — one-time setup (only you can do this part)
 
-1. Go to **github.com/emilyspringerton/MJOLNIR → Settings → Secrets and variables → Actions**.
-2. Click **New repository secret**, name it `GOOGLE_SERVICES_JSON`.
-3. Paste the **full contents** of your real Firebase project's `google-services.json` file as the
-   value (from the Firebase console → Project settings → your Android app → download
-   `google-services.json`). The placeholder/example file in this repo will NOT work — CI checks
-   for a real numeric `project_number` and fails on purpose if it's missing.
-4. Save, then push any commit (or re-run the workflow from the Actions tab) to trigger a fresh
-   build. It takes about 5–8 minutes.
+**1a. Get a Firebase project with an Android app registered in it.** Skip to 1b if you already
+have one.
+
+1. Go to **console.firebase.google.com**, sign in with the Google account you want to own this
+   project.
+2. Click **Add project** (or **Create a project**). Name it whatever you like — e.g. `MJOLNIR` or
+   `einhorn-mjolnir`. Google Analytics can be left off; MJOLNIR doesn't need it.
+3. Once the project finishes provisioning, on the project overview page click the **Android icon**
+   (`</>`-style app-platform buttons near the top) to register a new Android app.
+4. For **Android package name**, enter exactly:
+   ```
+   industrial.einhorn.mjolnir
+   ```
+   This must match `applicationId` in `app/build.gradle.kts` character-for-character or the build
+   will fail even with a valid file. Nickname/SHA-1 fields are optional — leave them blank, they're
+   only needed for Dynamic Links or Firebase Auth, which MJOLNIR doesn't use (auth is IDUNA).
+5. Click **Register app**. The next screen offers a `google-services.json` to download — click
+   **Download google-services.json** and save it anywhere (Downloads folder is fine, it's about to
+   get pasted, not committed).
+6. You can click through/skip the remaining "Add Firebase SDK" steps shown in the console — that
+   part is already done in this repo's Gradle files.
+
+**1b. Put that file's contents into the GitHub secret.**
+
+1. Open the downloaded `google-services.json` in any text editor and copy the **entire contents**
+   (it's one JSON object — copy everything from the opening `{` to the closing `}`).
+2. Go to **github.com/emilyspringerton/MJOLNIR → Settings → Secrets and variables → Actions**.
+3. If a secret named `GOOGLE_SERVICES_JSON` already exists, click it → **Update**. Otherwise click
+   **New repository secret** and name it exactly `GOOGLE_SERVICES_JSON`.
+4. Paste the JSON you copied into the **Secret** value box — the whole file, not a snippet. The
+   placeholder/example file in this repo will NOT work as a substitute — CI checks for a real
+   numeric `project_number` inside the JSON and fails on purpose if that's missing or fake.
+5. Click **Add secret** (or **Update secret**).
+6. Trigger a fresh build: either push any commit, or go to the **Actions** tab → the `build.yml`
+   workflow → **Run workflow**. It takes about 5–8 minutes. Watch for the **Validate
+   google-services.json** step specifically — if it still fails, the pasted JSON is either
+   incomplete or the package name in Firebase didn't match `industrial.einhorn.mjolnir` exactly.
 
 ### Step 2 — once that build goes green, from your tablet's own browser (no computer needed)
 
