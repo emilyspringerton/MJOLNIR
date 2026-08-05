@@ -1,5 +1,10 @@
 # MJOLNIR Changelog
 
+## 2026-08-05
+
+- docs(readme): clearer step 1/step 2 split for the install-blocker walkthrough; refreshed CI run count (still blocked on GOOGLE_SERVICES_JSON secret, run #5 failing) (sess-20260723-2347-df115bd5)
+
+
 ## 2026-08-04
 
 - ci(build): fail fast with an actionable error when `google-services.json` is invalid. Founder
