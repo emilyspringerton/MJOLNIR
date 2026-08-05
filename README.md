@@ -6,10 +6,13 @@ Push notifications from Emily Prime. Apple feed from IDUNA. Front door to the pr
 
 ## Installing a build on your Android tablet
 
-**⚠️ Blocked right now**: every CI run to date (4 for 4, most recently run #4 on 2026-08-04) has
+**⚠️ Blocked right now**: every CI run to date (5 for 5, most recently run #5 on 2026-08-04) has
 failed at a step called **"Validate google-services.json"**, which means **no installable APK
 exists yet** — there is nothing to download until this is fixed, and it needs a real action from
-you specifically, not something fixable by editing code:
+you specifically, not something fixable by editing code. This is the one step in the whole
+process nobody else can do — no Firebase project, no `google-services.json`, no way around it.
+
+### Step 1 — one-time setup (only you can do this part)
 
 1. Go to **github.com/emilyspringerton/MJOLNIR → Settings → Secrets and variables → Actions**.
 2. Click **New repository secret**, name it `GOOGLE_SERVICES_JSON`.
@@ -20,7 +23,7 @@ you specifically, not something fixable by editing code:
 4. Save, then push any commit (or re-run the workflow from the Actions tab) to trigger a fresh
    build. It takes about 5–8 minutes.
 
-**Once a green build exists**, from your tablet's own browser (no computer needed):
+### Step 2 — once that build goes green, from your tablet's own browser (no computer needed)
 
 1. Open `github.com/emilyspringerton/MJOLNIR/actions/workflows/build.yml`, signed in to GitHub.
 2. Tap the latest run with a green check (not a red X).
