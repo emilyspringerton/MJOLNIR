@@ -1,6 +1,7 @@
 # MJOLNIR Changelog
 
 ## 2026-08-05
+- README: expanded Step 1 into a full Firebase-project + google-services.json secret walkthrough (package name, download, paste); refreshed stale CI run count (5->7) (sess-20260723-2347-df115bd5)
 
 - docs(readme): clearer step 1/step 2 split for the install-blocker walkthrough; refreshed CI run count (still blocked on GOOGLE_SERVICES_JSON secret, run #5 failing) (sess-20260723-2347-df115bd5)
 
